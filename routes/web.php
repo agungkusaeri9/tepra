@@ -3,7 +3,11 @@
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisBarangJasaController;
+use App\Http\Controllers\PenarikanDanaAnggaranController;
+use App\Http\Controllers\PendanaanPenangananCovid19Controller;
 use App\Http\Controllers\PendapatanController;
+use App\Http\Controllers\PenyerapanAnggaranController;
+use App\Http\Controllers\PermasalahanPenarikanDanaAnggaranController;
 use App\Http\Controllers\PermasalahanPendapatanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TriwulanController;
@@ -57,4 +61,16 @@ Route::middleware('auth')->group(function () {
 
     // permasalahan-pendapatan
     Route::resource('permasalahan-pendapatans', PermasalahanPendapatanController::class)->except('show');
+
+    // penarikan-dana-anggaran
+    Route::resource('penarikan-dana-anggarans', PenarikanDanaAnggaranController::class);
+
+    // permasalahan-penarikan-dana-anggaran
+    Route::resource('permasalahan-anggarans', PermasalahanPenarikanDanaAnggaranController::class)->except('show');
+
+    // penyerapan-anggarans
+    Route::resource('penyerapan-anggarans', PenyerapanAnggaranController::class)->except('show');
+
+    // pendanaan-penanganan-covid19
+    Route::resource('pendanaan-penanganan-covid19', PendanaanPenangananCovid19Controller::class)->except('show');
 });

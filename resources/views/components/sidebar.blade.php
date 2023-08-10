@@ -27,6 +27,17 @@
                     <li><a href="{{ route('permasalahan-pendapatans.index') }}">Permasalahan</a></li>
                 </ul>
             </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i>
+                    <span>Anggaran</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('penyerapan-anggarans.index') }}">Penyerapan Anggaran</a></li>
+                    <li><a href="{{ route('penarikan-dana-anggarans.index') }}">Penarikan Dana</a></li>
+                    <li><a href="{{ route('permasalahan-anggarans.index') }}">Permasalahan</a></li>
+                    <li><a href="{{ route('pendanaan-penanganan-covid19.index') }}">Penanganan Covid 19</a>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <a class="nav-link" href="{{ route('triwulans.index') }}">
                     <i class="fas fa-database"></i>

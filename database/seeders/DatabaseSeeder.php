@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\PenyerapanAnggaran;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,7 +22,11 @@ class DatabaseSeeder extends Seeder
                 TriwulanSeeder::class,
                 JenisBarangJasaSeeder::class,
                 PendapatanSeeder::class,
-                PermasalahanPendapatanSeeder::class
+                PermasalahanPendapatanSeeder::class,
+                PenarikanDanaAnggaranSeeder::class,
+                PermasalahanPenarikanDanaAnggaranSeeder::class,
+                PenyerapanAnggaranSeeder::class,
+                PendanaanPenangananCovid19Seeder::class
             ]
         );
     }
