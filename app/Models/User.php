@@ -23,7 +23,10 @@ class User extends Authenticatable
         'password',
         'username',
         'avatar',
-        'role'
+        'role',
+        'nip',
+        'alamat',
+        'nama_kepala_skpd'
     ];
 
     /**

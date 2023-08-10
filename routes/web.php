@@ -33,14 +33,15 @@ Auth::routes(['register' => false]);
 // group operator
 
 Route::middleware('auth')->group(function () {
+    // dashboard
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/change-password', [ChangePasswordController::class, 'index'])->name('change-password.index');
     Route::post('/change-password', [ChangePasswordController::class, 'update'])->name('change-password.update');
 
 
-    // dashboard
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // users
     Route::resource('users', UserController::class)->except('show');

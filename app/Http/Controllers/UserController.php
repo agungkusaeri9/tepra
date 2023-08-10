@@ -55,10 +55,21 @@ class UserController extends Controller
             'avatar' => ['image', 'mimes:jpg,jpeg,png']
         ]);
 
+        // cek jika role yang dipilih adalah skpd
+        if (request('role') === 'skpd') {
+            request()->validate([
+                'nip' => ['required', 'unique:users,nip'],
+                'alamat' => ['required'],
+                'nama_kepala_skpd' => ['required'],
+            ]);
+        }
+
+
         DB::beginTransaction();
 
         try {
             $data = request()->all();
+
             if (request()->file('avatar')) {
                 $data['avatar'] = request()->file('avatar')->store('users', 'public');
             } else {
@@ -110,20 +121,30 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = request()->all();
-
-        $item = User::findOrFail($id);
         request()->validate([
             'name' => ['required'],
-            'username' => ['required', Rule::unique('users')->ignore($item->id), 'alpha_num'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($item->id)],
+            'username' => ['required', Rule::unique('users')->ignore($id), 'alpha_num'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($id)],
             'role' => ['required', 'in:operator,skpd,tim tepra'],
             'avatar' => ['image', 'mimes:jpg,jpeg,png']
         ]);
 
+        // cek jika role yang dipilih adalah skpd
+        if (request('role') === 'skpd') {
+            request()->validate([
+                'nip' => ['required', Rule::unique('users', 'nip')->ignore($id)],
+                'alamat' => ['required'],
+                'nama_kepala_skpd' => ['required'],
+            ]);
+        }
+
+
         DB::beginTransaction();
 
         try {
+            $data = request()->all();
+            $item = User::findOrFail($id);
+
             if (request('password')) {
                 request()->validate([
                     'password' => ['required', 'min:6', 'confirmed'],

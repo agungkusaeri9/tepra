@@ -38,25 +38,27 @@
                     <div class="card">
                         <div class="card-body">
                             <h6 class="mb-4">Detail Pendapatan</h6>
-                            <table class="table table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th>Triwulan</th>
-                                        <th>Target</th>
-                                        <th>Realisasi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($item->details as $detail)
+                            <div class="table-responsive">
+                                <table class="table table-hover nowrap">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $detail->triwulan->nama . ' (' . $detail->triwulan->rentangWaktu() . ')' }}
-                                            </td>
-                                            <td>Rp {{ number_format($detail->target_pendapatan, 0, '.', '.') }}</td>
-                                            <td>Rp {{ number_format($detail->realisasi_pendapatan, 0, '.', '.') }}</td>
+                                            <th>Triwulan</th>
+                                            <th>Target</th>
+                                            <th>Realisasi</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($item->details as $detail)
+                                            <tr>
+                                                <td>{{ $detail->triwulan->nama . ' (' . $detail->triwulan->rentangWaktu() . ')' }}
+                                                </td>
+                                                <td>Rp {{ number_format($detail->target_pendapatan, 0, '.', '.') }}</td>
+                                                <td>Rp {{ number_format($detail->realisasi_pendapatan, 0, '.', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
