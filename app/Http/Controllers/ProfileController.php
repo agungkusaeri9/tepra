@@ -24,7 +24,7 @@ class ProfileController extends Controller
             'avatar' => ['image', 'mimes:jpg,jpeg,png', 'max:2048']
         ]);
 
-        $data = request()->only(['name', 'username', 'email', 'avatar']);
+        $data = request()->only(['name', 'username', 'email', 'avatar', 'alamat']);
         if (request()->file('avatar')) {
             $data['avatar'] = request()->file('avatar')->store('users', 'public');
         } else {

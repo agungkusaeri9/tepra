@@ -2,10 +2,10 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Data Permasalahan Anggaran</h1>
+            <h1>Data Permasalahan PBJ</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item">Data Permasalahan Anggaran</div>
+                <div class="breadcrumb-item">Data Permasalahan PBJ</div>
             </div>
         </div>
         <div class="section-body">
@@ -14,14 +14,15 @@
                     <div class="card">
                         <div class="card-body">
                             @if (auth()->user()->role === 'skpd')
-                                <a href="{{ route('permasalahan-anggarans.create') }}"
-                                    class="btn btn-sm btn-primary mb-3"><i class="fas fa-plus"></i> Tambah Data</a>
+                                <a href="{{ route('permasalahan-pbjs.create') }}" class="btn btn-sm btn-primary mb-3"><i
+                                        class="fas fa-plus"></i> Tambah Data</a>
                             @endif
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover nowrap" id="dTable">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
+                                            <th>Triwulan</th>
                                             <th>Permasalahan</th>
                                             <th>Penyebab</th>
                                             <th>Rekomendasi</th>
@@ -33,6 +34,8 @@
                                         @foreach ($items as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->triwulan->nama . ' (' . $item->triwulan->rentangWaktu() . ')' }}
+                                                </td>
                                                 <td>{{ $item->permasalahan }}</td>
                                                 <td>{{ $item->penyebab }}</td>
                                                 <td>
@@ -42,7 +45,7 @@
                                                 <td>
                                                     @if (auth()->user()->role === 'tim tepra')
                                                         @if (!$item->rekomendasi && !$item->timTepra)
-                                                            <a href="{{ route('permasalahan-anggarans.rekomendasi', $item->id) }}"
+                                                            <a href="{{ route('permasalahan-pbjs.rekomendasi', $item->id) }}"
                                                                 class="btn btn-sm btn-primary"><i class="fas fa-plus"></i>
                                                                 Rekomendasi</a>
                                                         @else
@@ -52,20 +55,19 @@
                                                                 Rekomendasi</a>
                                                         @endif
                                                     @else
-                                                        <a href="{{ route('permasalahan-anggarans.edit', $item->id) }}"
+                                                        <a href="{{ route('permasalahan-pbjs.edit', $item->id) }}"
                                                             class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
                                                         <form action="" method="post" class="d-inline"
                                                             id="formDelete">
                                                             @csrf
                                                             @method('delete')
                                                             <button
-                                                                data-action="{{ route('permasalahan-anggarans.destroy', $item->id) }}"
+                                                                data-action="{{ route('permasalahan-pbjs.destroy', $item->id) }}"
                                                                 class="btn btn-sm btn-danger btnDelete"><i
                                                                     class="fas fa-trash"></i>
                                                                 Hapus</button>
                                                         </form>
                                                     @endif
-
 
                                                 </td>
                                             </tr>

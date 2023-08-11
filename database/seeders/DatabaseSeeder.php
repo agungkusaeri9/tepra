@@ -26,7 +26,10 @@ class DatabaseSeeder extends Seeder
                 PenarikanDanaAnggaranSeeder::class,
                 PermasalahanPenarikanDanaAnggaranSeeder::class,
                 PenyerapanAnggaranSeeder::class,
-                PendanaanPenangananCovid19Seeder::class
+                PendanaanPenangananCovid19Seeder::class,
+                TargetPbjSeeder::class,
+                RealisasiPbjSeeder::class,
+                PermasalahanPbjSeeder::class
             ]
         );
     }

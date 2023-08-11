@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PermasalahanPendapatan;
+use App\Models\PermasalahanPbj;
+use App\Models\Triwulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PermasalahanPendapatanController extends Controller
+class PermasalahanPbjController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'delete']);
     }
+
     public function index()
     {
         if (auth()->user()->role === 'skpd')
-            $items = PermasalahanPendapatan::where('user_id', auth()->id())->with('timTepra')->latest()->get();
+            $items = PermasalahanPbj::where('user_id', auth()->id())->latest()->get();
         else
-            $items = PermasalahanPendapatan::with('timTepra')->latest()->get();
-
-        return view('pages.permasalahan-pendapatan.index', [
-            'title' => 'Data Permasalahan Pendapatan',
+            $items = PermasalahanPbj::latest()->get();
+        return view('pages.permasalahan-pbj.index', [
+            'title' => 'Data Permasalahan PBJ',
             'items' => $items
         ]);
     }
@@ -33,8 +33,9 @@ class PermasalahanPendapatanController extends Controller
      */
     public function create()
     {
-        return view('pages.permasalahan-pendapatan.create', [
-            'title' => 'Tambah Permasalahan Pendapatan',
+        return view('pages.permasalahan-pbj.create', [
+            'title' => 'Tambah Permasalahan PBJ',
+            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
         ]);
     }
 
@@ -47,6 +48,7 @@ class PermasalahanPendapatanController extends Controller
     public function store(Request $request)
     {
         request()->validate([
+            'triwulan_id' => ['required'],
             'permasalahan' => ['required'],
             'penyebab' => ['required']
         ]);
@@ -56,9 +58,9 @@ class PermasalahanPendapatanController extends Controller
         try {
             $data = request()->all();
             $data['user_id'] = auth()->id();
-            PermasalahanPendapatan::create($data);
+            PermasalahanPbj::create($data);
             DB::commit();
-            return redirect()->route('permasalahan-pendapatans.index')->with('success', 'Permasalahan Pendapatan berhasil ditambahkan.');
+            return redirect()->route('permasalahan-pbjs.index')->with('success', 'Permasalahan PBJ berhasil ditambahkan.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
@@ -86,13 +88,14 @@ class PermasalahanPendapatanController extends Controller
     public function edit($id)
     {
         if (auth()->user()->role === 'skpd')
-            $item = PermasalahanPendapatan::where('user_id', auth()->id())->with('timTepra')->where('id', $id)->firstOrFail();
+            $item = PermasalahanPbj::where('user_id', auth()->id())->where('id', $id)->firstOrFail();
         else
-            $item = PermasalahanPendapatan::findOrFail($id);
+            $item = PermasalahanPbj::findOrFail($id);
 
-        return view('pages.permasalahan-pendapatan.edit', [
-            'title' => 'Edit Permasalahan Pendapatan',
-            'item' => $item
+        return view('pages.permasalahan-pbj.edit', [
+            'title' => 'Edit Permasalahan PBJ',
+            'item' => $item,
+            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
         ]);
     }
 
@@ -106,6 +109,7 @@ class PermasalahanPendapatanController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
+            'triwulan_id' => ['required'],
             'permasalahan' => ['required'],
             'penyebab' => ['required']
         ]);
@@ -113,11 +117,11 @@ class PermasalahanPendapatanController extends Controller
         DB::beginTransaction();
 
         try {
-            $item = PermasalahanPendapatan::findOrFail($id);
+            $item = PermasalahanPbj::findOrFail($id);
             $data = request()->all();
             $item->update($data);
             DB::commit();
-            return redirect()->route('permasalahan-pendapatans.index')->with('success', 'Permasalahan Pendapatan berhasil disimpan.');
+            return redirect()->route('permasalahan-pbjs.index')->with('success', 'Permasalahan PBJ berhasil disimpan.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
@@ -133,14 +137,14 @@ class PermasalahanPendapatanController extends Controller
      */
     public function destroy($id)
     {
-        $item = PermasalahanPendapatan::findOrFail($id);
+        $item = PermasalahanPbj::findOrFail($id);
 
         DB::beginTransaction();
 
         try {
             $item->delete();
             DB::commit();
-            return redirect()->route('permasalahan-pendapatans.index')->with('success', 'Permasalahan Pendapatan berhasil dihapus.');
+            return redirect()->route('permasalahan-pbjs.index')->with('success', 'Permasalahan PBJ berhasil dihapus.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
@@ -150,14 +154,14 @@ class PermasalahanPendapatanController extends Controller
 
     public function rekomendasi($id)
     {
-        $item = PermasalahanPendapatan::findOrFail($id);
+        $item = PermasalahanPbj::findOrFail($id);
 
         // cek apakah sudah punya rekomendasi
         if ($item->rekomendasi && $item->timTepra) {
-            return redirect()->route('permasalahan-pendapatans.index')->with('error', 'Permasalahan Pendapatan sudah di cek Tim Tepra');
+            return redirect()->route('permasalahan-pbjs.index')->with('error', 'Permasalahan PBJ sudah di cek Tim Tepra');
         }
-        return view('pages.permasalahan-pendapatan.rekomendasi', [
-            'title' => 'Rekomendasi Permasalahan Pendapatan',
+        return view('pages.permasalahan-pbj.rekomendasi', [
+            'title' => 'Rekomendasi Permasalahan PBJ',
             'item' => $item
         ]);
     }
@@ -170,16 +174,18 @@ class PermasalahanPendapatanController extends Controller
 
         DB::beginTransaction();
         try {
-            $item = PermasalahanPendapatan::findOrFail($id);
+            $item = PermasalahanPbj::findOrFail($id);
             $item->update([
                 'rekomendasi' => request('rekomendasi'),
                 'tim_tepra_user_id' => auth()->id()
             ]);
 
             DB::commit();
-            return redirect()->route('permasalahan-pendapatans.index')->with('success', 'Rekomendasi Permasalahan Pendapatan berhasil ditambahkan.');
+            return redirect()->route('permasalahan-pbjs.index')->with('success', 'Rekomendasi Permasalahan PBJ berhasil ditambahkan.');
         } catch (\Throwable $th) {
             //throw $th;
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

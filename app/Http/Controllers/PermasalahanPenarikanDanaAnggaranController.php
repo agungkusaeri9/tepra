@@ -8,9 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class PermasalahanPenarikanDanaAnggaranController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'delete']);
+    }
+
     public function index()
     {
-        $items = PermasalahanPenarikanDanaAnggaran::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id)->latest()->get();
+        else
+            $items = PermasalahanPenarikanDanaAnggaran::latest()->get();
         return view('pages.permasalahan-anggaran.index', [
             'title' => 'Data Permasalahan Anggaran',
             'items' => $items
@@ -76,7 +84,11 @@ class PermasalahanPenarikanDanaAnggaranController extends Controller
      */
     public function edit($id)
     {
-        $item = PermasalahanPenarikanDanaAnggaran::findOrFail($id);
+        if (auth()->user()->role === 'skpd')
+            $item = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id)->where('id', $id)->firstOrFail();
+        else
+            $item = PermasalahanPenarikanDanaAnggaran::findOrFail($id);
+
         return view('pages.permasalahan-anggaran.edit', [
             'title' => 'Edit Permasalahan Anggaran',
             'item' => $item
@@ -132,6 +144,41 @@ class PermasalahanPenarikanDanaAnggaranController extends Controller
             //throw $th;
             DB::rollBack();
             return redirect()->route('permasalahan-anggarans.index')->with('error', $th->getMessage());
+        }
+    }
+
+    public function rekomendasi($id)
+    {
+        $item = PermasalahanPenarikanDanaAnggaran::findOrFail($id);
+
+        // cek apakah sudah punya rekomendasi
+        if ($item->rekomendasi && $item->timTepra) {
+            return redirect()->route('permasalahan-anggarans.index')->with('error', 'Permasalahan Anggaran sudah di cek Tim Tepra');
+        }
+        return view('pages.permasalahan-anggaran.rekomendasi', [
+            'title' => 'Rekomendasi Permasalahan Anggaran',
+            'item' => $item
+        ]);
+    }
+
+    public function rekomendasiStore($id)
+    {
+        request()->validate([
+            'rekomendasi' => ['required']
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $item = PermasalahanPenarikanDanaAnggaran::findOrFail($id);
+            $item->update([
+                'rekomendasi' => request('rekomendasi'),
+                'tim_tepra_user_id' => auth()->id()
+            ]);
+
+            DB::commit();
+            return redirect()->route('permasalahan-anggarans.index')->with('success', 'Rekomendasi Permasalahan Anggaran berhasil ditambahkan.');
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }
