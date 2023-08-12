@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\Laporan;
 use App\Models\Triwulan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -13,13 +14,17 @@ class LaporanController extends Controller
     {
         return view('pages.laporan.index', [
             'title' => 'Laporan',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_user' => User::where('role', 'skpd')->orderBy('name', 'ASC')->get()
         ]);
     }
 
     public function excel()
     {
-        $triwulan_id = request('triwulan_id');
-        return Excel::download(new Laporan($triwulan_id), 'Laporan.xlsx');
+        request()->validate([
+            'user_id' => ['required']
+        ]);
+
+        $user_id = request('user_id');
+        return Excel::download(new Laporan($user_id), 'Laporan.xlsx');
     }
 }

@@ -12,7 +12,10 @@ class PenarikanDanaAnggaranController extends Controller
 {
     public function index()
     {
-        $items = PenarikanDanaAnggaran::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = PenarikanDanaAnggaran::where('user_id', auth()->id())->latest()->get();
+        else
+            $items = PenarikanDanaAnggaran::latest()->get();
         return view('pages.penarikan-dana-anggaran.index', [
             'title' => 'Data belanja',
             'items' => $items

@@ -10,7 +10,10 @@ class PendanaanPenangananCovid19Controller extends Controller
 {
     public function index()
     {
-        $items = PendanaanPenangananCovid19::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = PendanaanPenangananCovid19::where('user_id', auth()->id())->latest()->get();
+        else
+            $items = PendanaanPenangananCovid19::latest()->get();
         return view('pages.pendanaan-penanganan-covid19.index', [
             'title' => 'Data Pendanaan Penanganan Covid 19',
             'items' => $items

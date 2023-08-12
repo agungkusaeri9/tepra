@@ -16,7 +16,7 @@ class PermasalahanPenarikanDanaAnggaranController extends Controller
     public function index()
     {
         if (auth()->user()->role === 'skpd')
-            $items = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id)->latest()->get();
+            $items = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id())->latest()->get();
         else
             $items = PermasalahanPenarikanDanaAnggaran::latest()->get();
         return view('pages.permasalahan-anggaran.index', [

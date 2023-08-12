@@ -17,15 +17,15 @@
                                 @csrf
                                 <div class="col-md-4">
                                     <div class='form-group mb-3'>
-                                        <label for='triwulan_id' class='mb-2'>Pilih Triwulan</label>
-                                        <select name="triwulan_id" id="triwulan_id" class="form-control">
-                                            <option value="">Semua</option>
-                                            @foreach ($data_triwulan as $triwulan)
-                                                <option value="{{ $triwulan->id }}">
-                                                    {{ $triwulan->nama . ' (' . $triwulan->rentangWaktu() . ')' }}</option>
+                                        <label for='user_id' class='mb-2'>Pilih User SKPD</label>
+                                        <select name="user_id" id="user_id" class="form-control">
+                                            <option value="">Pilih User</option>
+                                            @foreach ($data_user as $user)
+                                                <option value="{{ $user->id }}">
+                                                    {{ $user->name . ' - ' . $user->nip }}</option>
                                             @endforeach
                                         </select>
-                                        @error('triwulan_id')
+                                        @error('user_id')
                                             <div class='invalid-feedback'>
                                                 {{ $message }}
                                             </div>

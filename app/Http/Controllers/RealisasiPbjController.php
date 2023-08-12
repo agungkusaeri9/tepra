@@ -13,7 +13,10 @@ class RealisasiPbjController extends Controller
 {
     public function index()
     {
-        $items = RealisasiPbj::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = RealisasiPbj::where('user_id', auth()->id())->latest()->get();
+        else
+            $items = RealisasiPbj::latest()->get();
         return view('pages.realisasi-pbj.index', [
             'title' => 'Data Realisasi PBJ',
             'items' => $items

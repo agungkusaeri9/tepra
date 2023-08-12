@@ -14,7 +14,10 @@ class TargetPbjController extends Controller
 {
     public function index()
     {
-        $items = TargetPbj::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = TargetPbj::where('user_id', auth()->id())->latest()->get();
+        else
+            $items = TargetPbj::latest()->get();
         return view('pages.target-pbj.index', [
             'title' => 'Data Target PBJ',
             'items' => $items

@@ -12,7 +12,10 @@ class PendapatanController extends Controller
 {
     public function index()
     {
-        $items = Pendapatan::orderBy('jenis_pendapatan', 'ASC')->get();
+        if (auth()->user()->role === 'skpd')
+            $items = Pendapatan::where('user_id', auth()->id())->orderBy('jenis_pendapatan', 'ASC')->get();
+        else
+            $items = Pendapatan::orderBy('jenis_pendapatan', 'ASC')->get();
         return view('pages.pendapatan.index', [
             'title' => 'Data Pendapatan',
             'items' => $items

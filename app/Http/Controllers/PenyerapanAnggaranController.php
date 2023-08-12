@@ -11,7 +11,10 @@ class PenyerapanAnggaranController extends Controller
 {
     public function index()
     {
-        $items = PenyerapanAnggaran::latest()->get();
+        if (auth()->user()->role === 'skpd')
+            $items = PenyerapanAnggaran::where('user_id', auth()->id())->latest()->get();
+        else
+            $items = PenyerapanAnggaran::latest()->get();
         return view('pages.penyerapan-anggaran.index', [
             'title' => 'Data Penyerapan Anggaran',
             'items' => $items
@@ -109,7 +112,7 @@ class PenyerapanAnggaranController extends Controller
             $item = PenyerapanAnggaran::where([
                 'id' => $id,
                 'user_id' => auth()->id()
-            ]);
+            ])->firstOrFail();
             $data = request()->all();
             $item->update($data);
             DB::commit();
