@@ -61,6 +61,12 @@
                         <li><a href="{{ route('permasalahan-pbjs.index') }}">Permasalahan PBJ</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('laporan.index') }}">
+                        <i class="fas fa-file-excel"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
             @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('permasalahan-pendapatans.index') }}">

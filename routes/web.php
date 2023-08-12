@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisBarangJasaController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenarikanDanaAnggaranController;
 use App\Http\Controllers\PendanaanPenangananCovid19Controller;
 use App\Http\Controllers\PendapatanController;
@@ -94,5 +95,8 @@ Route::middleware('auth')->group(function () {
         Route::get('permasalahan-pbjs/{id}/rekomendasi', [PermasalahanPbjController::class, 'rekomendasi'])->name('permasalahan-pbjs.rekomendasi')->middleware('cekRole:tim tepra');
         Route::post('permasalahan-pbjs/{id}/rekomendasi', [PermasalahanPbjController::class, 'rekomendasiStore'])->name('permasalahan-pbjs.rekomendasi-store')->middleware('cekRole:tim tepra');
         Route::resource('permasalahan-pbjs', PermasalahanPbjController::class)->except('show')->middleware('cekRole:skpd,tim tepra');
+
+        Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::post('laporan/export-excel', [LaporanController::class, 'excel'])->name('laporan.export-excel');
     });
 });
