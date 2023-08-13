@@ -12,6 +12,12 @@ use Illuminate\Validation\Rule;
 
 class TargetPbjController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd,tim tepra')->only(['index', 'show']);
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         if (auth()->user()->role === 'skpd')
@@ -90,10 +96,16 @@ class TargetPbjController extends Controller
      */
     public function show($id)
     {
-        $item = TargetPbj::with('details.jenis')->where([
-            'user_id' => auth()->id(),
-            'id' => $id
-        ])->firstOrFail();
+        if (auth()->user()->role === 'skpd') {
+            $item = TargetPbj::with('details.jenis')->where([
+                'user_id' => auth()->id(),
+                'id' => $id
+            ])->firstOrFail();
+        } else {
+            $item = TargetPbj::with('details.jenis')->where([
+                'id' => $id
+            ])->firstOrFail();
+        }
 
         return view('pages.target-pbj.show', [
             'title' => 'Detail Target PBJ',

@@ -10,6 +10,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd,tim tepra');
+    }
+
     public function index()
     {
         return view('pages.laporan.index', [

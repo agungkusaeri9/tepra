@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class RealisasiPbjController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd,tim tepra')->only(['index', 'show']);
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         if (auth()->user()->role === 'skpd')
@@ -90,10 +96,16 @@ class RealisasiPbjController extends Controller
      */
     public function show($id)
     {
-        $item = RealisasiPbj::with('details.jenis')->where([
-            'user_id' => auth()->id(),
-            'id' => $id
-        ])->firstOrFail();
+        if (auth()->user()->role === 'skpd') {
+            $item = RealisasiPbj::with('details.jenis')->where([
+                'user_id' => auth()->id(),
+                'id' => $id
+            ])->firstOrFail();
+        } else {
+            $item = RealisasiPbj::with('details.jenis')->where([
+                'id' => $id
+            ])->firstOrFail();
+        }
 
         return view('pages.realisasi-pbj.show', [
             'title' => 'Detail Realisasi PBJ',

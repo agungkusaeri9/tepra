@@ -11,7 +11,8 @@ class PermasalahanPbjController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'delete']);
+        $this->middleware('cekRole:skpd,tim tepra')->only(['index']);
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
     public function index()

@@ -22,6 +22,7 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
+                                            <th>SKPD</th>
                                             <th>Triwulan</th>
                                             <th>Permasalahan</th>
                                             <th>Penyebab</th>
@@ -34,6 +35,7 @@
                                         @foreach ($items as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->triwulan->nama . ' (' . $item->triwulan->rentangWaktu() . ')' }}
                                                 </td>
                                                 <td>{{ $item->permasalahan }}</td>

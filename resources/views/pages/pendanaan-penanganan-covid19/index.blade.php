@@ -13,41 +13,50 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('pendanaan-penanganan-covid19.create') }}"
-                                class="btn btn-sm btn-primary mb-3"><i class="fas fa-plus"></i> Tambah Data</a>
+                            @if (auth()->user()->role === 'skpd')
+                                <a href="{{ route('pendanaan-penanganan-covid19.create') }}"
+                                    class="btn btn-sm btn-primary mb-3"><i class="fas fa-plus"></i> Tambah Data</a>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover nowrap" id="dTable">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
+                                            <th>SKPD</th>
                                             <th>Fokus</th>
                                             <th>Program</th>
                                             <th>Target</th>
                                             <th>Realisasi</th>
-                                            <th>Aksi</th>
+                                            @if (auth()->user()->role === 'skpd')
+                                                <th>Aksi</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($items as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->fokus }}</td>
                                                 <td>{{ $item->program }}</td>
                                                 <td>Rp {{ number_format($item->target, 0, '.', '.') }}</td>
                                                 <td>Rp {{ number_format($item->realisasi, 0, '.', '.') }}</td>
-                                                <td>
-                                                    <a href="{{ route('pendanaan-penanganan-covid19.edit', $item->id) }}"
-                                                        class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
-                                                    <form action="" method="post" class="d-inline" id="formDelete">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button
-                                                            data-action="{{ route('pendanaan-penanganan-covid19.destroy', $item->id) }}"
-                                                            class="btn btn-sm btn-danger btnDelete"><i
-                                                                class="fas fa-trash"></i>
-                                                            Hapus</button>
-                                                    </form>
-                                                </td>
+                                                @if (auth()->user()->role === 'skpd')
+                                                    <td>
+                                                        <a href="{{ route('pendanaan-penanganan-covid19.edit', $item->id) }}"
+                                                            class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
+                                                        <form action="" method="post" class="d-inline"
+                                                            id="formDelete">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button
+                                                                data-action="{{ route('pendanaan-penanganan-covid19.destroy', $item->id) }}"
+                                                                class="btn btn-sm btn-danger btnDelete"><i
+                                                                    class="fas fa-trash"></i>
+                                                                Hapus</button>
+                                                        </form>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

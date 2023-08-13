@@ -32,7 +32,7 @@
                         <span>Users</span>
                     </a>
                 </li>
-            @elseif(auth()->user()->role === 'skpd')
+            @else
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-database"></i>
                         <span>Realisasi Pendapatan</span></a>
@@ -65,25 +65,6 @@
                     <a class="nav-link" href="{{ route('laporan.index') }}">
                         <i class="fas fa-file-excel"></i>
                         <span>Laporan</span>
-                    </a>
-                </li>
-            @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('permasalahan-pendapatans.index') }}">
-                        <i class="fas fa-database"></i>
-                        <span>Permasalahan Pendapatan</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('permasalahan-anggarans.index') }}">
-                        <i class="fas fa-database"></i>
-                        <span>Permasalahan Anggaran</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('permasalahan-pendapatans.index') }}">
-                        <i class="fas fa-database"></i>
-                        <span>Permasalahan Barang Jasa</span>
                     </a>
                 </li>
             @endif

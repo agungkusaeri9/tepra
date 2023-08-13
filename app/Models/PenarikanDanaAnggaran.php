@@ -15,4 +15,9 @@ class PenarikanDanaAnggaran extends Model
     {
         return $this->hasMany(PenarikanDanaAnggaranDetail::class, 'penarikan_anggaran_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

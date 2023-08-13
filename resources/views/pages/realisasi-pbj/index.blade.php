@@ -13,12 +13,15 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('realisasi-pbjs.create') }}" class="btn btn-sm btn-primary mb-3"><i
-                                    class="fas fa-plus"></i> Tambah Data</a>
+                            @if (auth()->user()->role === 'skpd')
+                                <a href="{{ route('realisasi-pbjs.create') }}" class="btn btn-sm btn-primary mb-3"><i
+                                        class="fas fa-plus"></i> Tambah Data</a>
+                            @endif
                             <table class="table table-striped table-hover" id="dTable">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
+                                        <th>SKPD</th>
                                         <th>Triwulan</th>
                                         <th>Tahapan</th>
                                         <th>Aksi</th>
@@ -28,21 +31,26 @@
                                     @foreach ($items as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->user->name }}</td>
                                             <td>{{ $item->triwulan->nama . ' (' . $item->triwulan->rentangWaktu() . ')' }}
                                             </td>
                                             <td>{{ $item->tahapan }}</td>
                                             <td>
                                                 <a href="{{ route('realisasi-pbjs.show', $item->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-eye"></i> Detail</a>
-                                                <a href="{{ route('realisasi-pbjs.edit', $item->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
-                                                <form action="" method="post" class="d-inline" id="formDelete">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button data-action="{{ route('realisasi-pbjs.destroy', $item->id) }}"
-                                                        class="btn btn-sm btn-danger btnDelete"><i class="fas fa-trash"></i>
-                                                        Hapus</button>
-                                                </form>
+                                                @if (auth()->user()->role === 'skpd')
+                                                    <a href="{{ route('realisasi-pbjs.edit', $item->id) }}"
+                                                        class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit</a>
+                                                    <form action="" method="post" class="d-inline" id="formDelete">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            data-action="{{ route('realisasi-pbjs.destroy', $item->id) }}"
+                                                            class="btn btn-sm btn-danger btnDelete"><i
+                                                                class="fas fa-trash"></i>
+                                                            Hapus</button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

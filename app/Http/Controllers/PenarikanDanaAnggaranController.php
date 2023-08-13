@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class PenarikanDanaAnggaranController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd,tim tepra')->only(['index', 'show']);
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         if (auth()->user()->role === 'skpd')
@@ -87,10 +94,17 @@ class PenarikanDanaAnggaranController extends Controller
      */
     public function show($id)
     {
-        $item = PenarikanDanaAnggaran::with(['details.triwulan'])->where([
-            'user_id' => auth()->id(),
-            'id' => $id
-        ])->firstOrFail();
+
+        if (auth()->user()->role === 'skpd') {
+            $item = PenarikanDanaAnggaran::with(['details.triwulan'])->where([
+                'user_id' => auth()->id(),
+                'id' => $id
+            ])->firstOrFail();
+        } else {
+            $item = PenarikanDanaAnggaran::with(['details.triwulan'])->where([
+                'id' => $id
+            ])->firstOrFail();
+        }
 
         return view('pages.penarikan-dana-anggaran.show', [
             'title' => 'Detai belanja',

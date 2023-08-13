@@ -17,13 +17,18 @@
                                 @csrf
                                 <div class="col-md-4">
                                     <div class='form-group mb-3'>
-                                        <label for='user_id' class='mb-2'>Pilih User SKPD</label>
+                                        <label for='user_id' class='mb-2'>SKPD</label>
                                         <select name="user_id" id="user_id" class="form-control">
-                                            <option value="">Pilih User</option>
-                                            @foreach ($data_user as $user)
-                                                <option value="{{ $user->id }}">
-                                                    {{ $user->name . ' - ' . $user->nip }}</option>
-                                            @endforeach
+                                            @if (auth()->user()->role === 'skpd')
+                                                <option value="{{ auth()->id() }}">
+                                                    {{ auth()->user()->name . ' - ' . auth()->user()->nip }}</option>
+                                            @else
+                                                <option value="">Pilih User</option>
+                                                @foreach ($data_user as $user)
+                                                    <option value="{{ $user->id }}">
+                                                        {{ $user->name . ' - ' . $user->nip }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                         @error('user_id')
                                             <div class='invalid-feedback'>

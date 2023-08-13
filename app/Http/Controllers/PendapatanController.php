@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class PendapatanController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cekRole:skpd,tim tepra')->only(['index', 'show']);
+        $this->middleware('cekRole:skpd')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         if (auth()->user()->role === 'skpd')
@@ -87,10 +94,16 @@ class PendapatanController extends Controller
      */
     public function show($id)
     {
-        $item = Pendapatan::with('details')->where([
-            'user_id' => auth()->id(),
-            'id' => $id
-        ])->firstOrFail();
+        if (auth()->user()->role === 'skpd') {
+            $item = Pendapatan::with('details')->where([
+                'user_id' => auth()->id(),
+                'id' => $id
+            ])->firstOrFail();
+        } else {
+            $item = Pendapatan::with('details')->where([
+                'id' => $id
+            ])->firstOrFail();
+        }
 
         return view('pages.pendapatan.show', [
             'title' => 'Detai Pendapatan',
