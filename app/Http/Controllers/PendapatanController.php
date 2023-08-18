@@ -36,9 +36,10 @@ class PendapatanController extends Controller
      */
     public function create()
     {
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.pendapatan.create', [
             'title' => 'Tambah Pendapatan',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => $data_triwulan
         ]);
     }
 
@@ -123,10 +124,11 @@ class PendapatanController extends Controller
             'user_id' => auth()->id(),
             'id' => $id
         ])->firstOrFail();
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.pendapatan.edit', [
             'title' => 'Edit Pendapatan',
             'item' => $item,
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => $data_triwulan
         ]);
     }
 

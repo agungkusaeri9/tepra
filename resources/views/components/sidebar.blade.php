@@ -1,7 +1,21 @@
 <div>
     <aside id="sidebar-wrapper">
-        <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Tepra</a>
+        <div class="sidebar-brand mt-3 px-3" style="line-height: 10px">
+            <a href="{{ route('dashboard') }}">
+                <div class="d-flex justify-content-start">
+                    <div>
+                        <img src="{{ asset('assets/img/logo.png') }}" alt="" class="img-fluid"
+                            style="height: 45px;">
+                    </div>
+                    <div class="text-left mt-2">
+                        <span class="text-success font-weight-bold">TEPRA</span>
+                        <br>
+                        <div style="font-size: 7px !important;font-weight:bold">TIM EVALUASI PERENCANAAN DAN REALISASI
+                            ANGGARAN</div>
+                    </div>
+                </div>
+
+            </a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">TP</a>

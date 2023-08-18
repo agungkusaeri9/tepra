@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -82,5 +83,24 @@ class Triwulan extends Model
             ['nomor' => 11, 'nama' => 'November'],
             ['nomor' => 12, 'nama' => 'Desember'],
         ]);
+    }
+
+    public function scopeActive($query)
+    {
+        $bulan_sekarang = Carbon::now()->translatedFormat('m');
+        $tahun_sekarang = Carbon::now()->translatedFormat('Y');
+        $query->where('bulan_awal', '<=', $bulan_sekarang)->where('tahun_awal', '<=', $tahun_sekarang)->where('bulan_akhir', '>=', $bulan_sekarang)->where('tahun_akhir', '>=', $tahun_sekarang);
+    }
+
+    public function checkActive()
+    {
+        $bulan_sekarang = Carbon::now()->translatedFormat('m');
+        $tahun_sekarang = Carbon::now()->translatedFormat('Y');
+        $response = Triwulan::where('id', $this->id)->where('bulan_awal', '<=', $bulan_sekarang)->where('tahun_awal', '<=', $tahun_sekarang)->where('bulan_akhir', '>=', $bulan_sekarang)->where('tahun_akhir', '>=', $tahun_sekarang)->count();
+
+        if ($response > 0)
+            return true;
+        else
+            return false;
     }
 }
