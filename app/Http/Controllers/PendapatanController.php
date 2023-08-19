@@ -37,6 +37,7 @@ class PendapatanController extends Controller
     public function create()
     {
         $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
+
         return view('pages.pendapatan.create', [
             'title' => 'Tambah Pendapatan',
             'data_triwulan' => $data_triwulan
@@ -81,7 +82,7 @@ class PendapatanController extends Controller
             DB::commit();
             return redirect()->route('pendapatans.index')->with('success', 'Pendapatan berhasil ditambahkan.');
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             DB::rollBack();
             return redirect()->route('pendapatans.index')->with('error', $th->getMessage());
         }
@@ -157,7 +158,7 @@ class PendapatanController extends Controller
 
         try {
             // hapus keseluruhan pendapatan detail
-            PendapatanDetail::where('pendapatan_id', $id)->delete();
+            // PendapatanDetail::where('pendapatan_id', $id)->delete();
 
             $data = request()->only(['jenis_pendapatan']);
             $pendapatan = Pendapatan::with('details')->where([

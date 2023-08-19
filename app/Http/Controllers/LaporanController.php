@@ -31,6 +31,7 @@ class LaporanController extends Controller
         ]);
 
         $user_id = request('user_id');
-        return Excel::download(new Laporan($user_id), 'Laporan.xlsx');
+        $fileName = auth()->user()->name . '.xlsx';
+        return Excel::download(new Laporan($user_id), $fileName);
     }
 }

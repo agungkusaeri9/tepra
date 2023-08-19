@@ -36,9 +36,10 @@ class PenarikanDanaAnggaranController extends Controller
      */
     public function create()
     {
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.penarikan-dana-anggaran.create', [
             'title' => 'Tambah belanja',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => $data_triwulan
         ]);
     }
 
@@ -125,11 +126,11 @@ class PenarikanDanaAnggaranController extends Controller
             'id' => $id
         ])->firstOrFail();
 
-
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.penarikan-dana-anggaran.edit', [
             'title' => 'Edit belanja',
             'item' => $item,
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => $data_triwulan
         ]);
     }
 

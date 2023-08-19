@@ -44,64 +44,125 @@
                                 </div>
 
                                 @foreach ($item->details as $key => $detail)
-                                    <div class="row" id="row2">
-                                        <div class="col-md-4">
-                                            <div class='form-group mb-3'>
-                                                <label for='item_description' class='mb-2'>Pilih Triwulan</label>
-                                                <select name="triwulan_id[]" id="triwulan_id"
-                                                    class="form-control @error('triwulan_id') is-invalid @enderror">
-                                                    @foreach ($data_triwulan as $triwulan)
-                                                        <option @selected($triwulan->id == $detail->triwulan_id) value="{{ $triwulan->id }}">
-                                                            {{ $triwulan->nama . ' (' . $triwulan->rentangWaktu() . ')' }}
+                                    @if ($detail->triwulan->checkActive() == true)
+                                        <div class="row" id="row2">
+                                            <div class="col-md-4">
+                                                <div class='form-group mb-3'>
+                                                    <label for='item_description' class='mb-2'>Pilih Triwulan</label>
+                                                    <select name="triwulan_id[]" id="triwulan_id"
+                                                        class="form-control @error('triwulan_id') is-invalid @enderror">
+                                                        @foreach ($data_triwulan as $triwulan)
+                                                            <option @selected($triwulan->id == $detail->triwulan_id)
+                                                                value="{{ $triwulan->id }}">
+                                                                {{ $triwulan->nama . ' (' . $triwulan->rentangWaktu() . ')' }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('item_description')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class='form-group mb-3'>
+                                                    <label for='target_belanja' class='mb-2'>Target Belanja</label>
+                                                    <input type='number' name='target_belanja[]' required
+                                                        class='form-control @error('target_belanja') is-invalid @enderror'
+                                                        value='{{ $detail->target_belanja }}'>
+                                                    @error('target_belanja')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class='form-group mb-3'>
+                                                    <label for='realisasi_belanja' class='mb-2'>Realisasi
+                                                        Belanja</label>
+                                                    <input type='number' required name='realisasi_belanja[]'
+                                                        class='form-control @error('realisasi_belanja') is-invalid @enderror'
+                                                        value='{{ $detail->realisasi_belanja }}'>
+                                                    @error('realisasi_belanja')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            @if ($key < 1)
+                                                <div class="col-md align-self-end mb-3">
+                                                    <button type="button" class="btn btn-block py-2 rowAdd btn-success"><i
+                                                            class="fas fa-plus"></i></button>
+                                                </div>
+                                            @else
+                                                <div class="col-md align-self-end mb-3">
+                                                    <button type="button"
+                                                        class="btn btn-block py-2 rowDelete2 btn-danger"><i
+                                                            class="fas fa-minus"></i></button>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div class="row" id="row2">
+                                            <div class="col-md-4">
+                                                <div class='form-group mb-3'>
+                                                    <label for='item_description' class='mb-2'>Pilih Triwulan</label>
+                                                    <select name="triwulan_id[]" id="triwulan_id"
+                                                        class="form-control @error('triwulan_id') is-invalid @enderror">
+                                                        <option value="{{ $detail->triwulan->id }}">
+                                                            {{ $detail->triwulan->nama . ' (' . $detail->triwulan->rentangWaktu() . ')' }}
                                                         </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('item_description')
-                                                    <div class='invalid-feedback'>
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                                    </select>
+                                                    @error('item_description')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class='form-group mb-3'>
+                                                    <label for='target_belanja' class='mb-2'>Target Belanja</label>
+                                                    <input type='number' name='target_belanja[]' required
+                                                        class='form-control @error('target_belanja') is-invalid @enderror'
+                                                        value='{{ $detail->target_belanja }}'>
+                                                    @error('target_belanja')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class='form-group mb-3'>
+                                                    <label for='realisasi_belanja' class='mb-2'>Realisasi
+                                                        Belanja</label>
+                                                    <input type='number' required name='realisasi_belanja[]'
+                                                        class='form-control @error('realisasi_belanja') is-invalid @enderror'
+                                                        value='{{ $detail->realisasi_belanja }}'>
+                                                    @error('realisasi_belanja')
+                                                        <div class='invalid-feedback'>
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            @if ($key < 1)
+                                                <div class="col-md align-self-end mb-3">
+                                                    <button type="button" class="btn btn-block py-2 rowAdd btn-success"><i
+                                                            class="fas fa-plus"></i></button>
+                                                </div>
+                                            @else
+                                                <div class="col-md align-self-end mb-3">
+                                                    <button type="button" class="btn btn-block py-2 disabled btn-danger"><i
+                                                            class="fas fa-minus"></i></button>
+                                                </div>
+                                            @endif
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class='form-group mb-3'>
-                                                <label for='target_belanja' class='mb-2'>Target Belanja</label>
-                                                <input type='number' name='target_belanja[]' required
-                                                    class='form-control @error('target_belanja') is-invalid @enderror'
-                                                    value='{{ $detail->target_belanja }}'>
-                                                @error('target_belanja')
-                                                    <div class='invalid-feedback'>
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class='form-group mb-3'>
-                                                <label for='realisasi_belanja' class='mb-2'>Realisasi
-                                                    Belanja</label>
-                                                <input type='number' required name='realisasi_belanja[]'
-                                                    class='form-control @error('realisasi_belanja') is-invalid @enderror'
-                                                    value='{{ $detail->realisasi_belanja }}'>
-                                                @error('realisasi_belanja')
-                                                    <div class='invalid-feedback'>
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @if ($key < 1)
-                                            <div class="col-md align-self-end mb-3">
-                                                <button type="button" class="btn btn-block py-2 rowAdd btn-success"><i
-                                                        class="fas fa-plus"></i></button>
-                                            </div>
-                                        @else
-                                            <div class="col-md align-self-end mb-3">
-                                                <button type="button" class="btn btn-block py-2 rowDelete2 btn-danger"><i
-                                                        class="fas fa-minus"></i></button>
-                                            </div>
-                                        @endif
-                                    </div>
+                                    @endif
                                 @endforeach
                                 <div class="newInput"></div>
                                 <div class="form-group">

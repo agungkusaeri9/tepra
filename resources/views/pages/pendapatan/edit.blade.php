@@ -46,6 +46,7 @@
                                 @foreach ($item->details as $key => $detail)
                                     @if ($detail->triwulan->checkActive() == true)
                                         <div class="row" id="row2">
+                                            <input type="text" name="baru[]" hidden value="0">
                                             <div class="col-md-4">
                                                 <div class='form-group mb-3'>
                                                     <label for='triwulan_id' class='mb-2'>Pilih Triwulan</label>
@@ -107,6 +108,7 @@
                                         </div>
                                     @else
                                         <div class="row" id="row2">
+                                            <input type="text" name="baru[]" hidden value="0">
                                             <div class="col-md-4">
                                                 <div class='form-group mb-3'>
                                                     <label for='triwulan_id' class='mb-2'>Pilih Triwulan</label>
@@ -153,7 +155,8 @@
                                             </div>
                                             @if ($key < 1)
                                                 <div class="col-md align-self-end mb-3">
-                                                    <button type="button" class="btn btn-block py-2 rowAdd btn-success"><i
+                                                    <button type="button"
+                                                        class="btn btn-block py-2 rowAdd btn-success"><i
                                                             class="fas fa-plus"></i></button>
                                                 </div>
                                             @else
@@ -185,6 +188,7 @@
                 let newRow = `
                 <div class="row" id="row">
                     <div class="col-md-4">
+                        <input type="text" name="baru[]" hidden value="1">
                                         <div class='form-group mb-3'>
                                             <label for='item_description' class='mb-2'>Pilih Triwulan</label>
                                             <select name="triwulan_id[]" id="triwulan_id"

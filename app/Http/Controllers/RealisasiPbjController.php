@@ -36,9 +36,10 @@ class RealisasiPbjController extends Controller
      */
     public function create()
     {
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.realisasi-pbj.create', [
             'title' => 'Tambah Realisasi PBJ',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get(),
+            'data_triwulan' => $data_triwulan,
             'data_jenis_barjas' => JenisBarangJasa::orderBy('nama', 'ASC')->get()
         ]);
     }
@@ -125,10 +126,11 @@ class RealisasiPbjController extends Controller
             'user_id' => auth()->id(),
             'id' => $id
         ])->firstOrFail();
+        $data_triwulan = Triwulan::active()->orderBy('nama', 'ASC')->get();
         return view('pages.realisasi-pbj.edit', [
             'title' => 'Edit Realisasi PBJ',
             'item' => $item,
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get(),
+            'data_triwulan' => $data_triwulan,
             'data_jenis_barjas' => JenisBarangJasa::orderBy('nama', 'ASC')->get()
         ]);
     }
