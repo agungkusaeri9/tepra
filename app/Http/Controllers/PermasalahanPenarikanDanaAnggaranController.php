@@ -86,7 +86,7 @@ class PermasalahanPenarikanDanaAnggaranController extends Controller
     public function edit($id)
     {
         if (auth()->user()->role === 'skpd')
-            $item = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id)->where('id', $id)->firstOrFail();
+            $item = PermasalahanPenarikanDanaAnggaran::where('user_id', auth()->id())->where('id', $id)->firstOrFail();
         else
             $item = PermasalahanPenarikanDanaAnggaran::findOrFail($id);
 
