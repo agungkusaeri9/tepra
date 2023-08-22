@@ -38,12 +38,13 @@ class Laporan implements FromView
         $data_pendanaan_covid19 = PendanaanPenangananCovid19::where('user_id', $this->user_id)->latest()->get();
         $data_jenis_barjas = JenisBarangJasa::orderBy('nama', 'ASC')->get();
         $data_target_pbj = TargetPbj::where('user_id', $this->user_id)->with('triwulan')->get();
-        $data_realisasi_pbj = RealisasiPbj::where('user_id', $this->user_id)->get();
+        $data_realisasi_pbj = RealisasiPbj::where('user_id', $this->user_id);
         $data_permasalahan_pbj = PermasalahanPbj::where('user_id', $this->user_id);
         $user = User::findOrFail($this->user_id);
         $triwulan_awal = Triwulan::orderBy('id', 'ASC')->first()->nama ?? '';
         $triwulan_akhir = Triwulan::orderBy('id', 'DESC')->first()->nama ?? '';
         $triwulan_akhir_tahun = Triwulan::orderBy('id', 'DESC')->first()->tahun_akhir ?? '';
+
         return view('pages.laporan.excel', [
             'data_pendapatan' => $data_pendapatan,
             'data_triwulan' => $data_triwulan,

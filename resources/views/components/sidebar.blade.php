@@ -1,4 +1,4 @@
-<div>
+<div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand mt-3 px-3" style="line-height: 10px">
             <a href="{{ route('dashboard') }}">

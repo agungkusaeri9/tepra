@@ -381,11 +381,12 @@
     @php
         $abjad = range('b', 'z');
     @endphp
-    @foreach ($data_triwulan as $key => $triwulan)
+    @foreach ($data_triwulan as $key => $realisasi_triwulan)
         <tr>
             <td></td>
             <td></td>
-            <td colspan="4">{{ $abjad[$key] }}. Realisasi PBJ {{ $triwulan->nama }} sebagai berikut :</td>
+            <td colspan="4">{{ $abjad[$key] }}. Realisasi PBJ {{ $realisasi_triwulan->nama }} sebagai berikut :
+            </td>
         </tr>
         <tr></tr>
         <tr>
@@ -405,32 +406,33 @@
                 <td style="text-align: center">Nilai</td>
             @endforeach
         </tr>
-        @foreach ($data_realisasi_pbj as $realisasi_pbj)
+        {{-- {{ dd($data_realisasi_pbj->where('triwulan_id', 2)->get()) }} --}}
+        @foreach (App\Models\RealisasiPbj::where('user_id', $user->id)->where('triwulan_id', $realisasi_triwulan->id)->get() as $realisasi_pbj)
             <tr>
                 <td></td>
                 <td></td>
-                @if ($realisasi_pbj->where('triwulan_id', $triwulan->id)->count() > 0)
-                    <td style="vertical-align: middle;text-align:center">{{ $loop->iteration }}</td>
-                    <td>
-                        {{ $realisasi_pbj->where('triwulan_id', $triwulan->id)->first()->tahapan ?? '' }}
+                {{-- @if ($realisasi_pbj->where('triwulan_id', $triwulan->id)->count() > 0) --}}
+                <td style="vertical-align: middle;text-align:center">{{ $loop->iteration }}</td>
+                <td>
+                    {{ $realisasi_pbj->tahapan ?? '' }}
+                </td>
+                @foreach ($data_jenis_barjas as $barjas)
+                    <td style="text-align: center">
+
+                        @if ($realisasi_pbj->first()->details()->count() > 0)
+                            {{ $realisasi_pbj->first()->details()->where('jenis_barang_jasa_id', $barjas->id)->sum('paket') }}
+                        @else
+                        @endif
                     </td>
-                    @foreach ($data_jenis_barjas as $barjas)
-                        <td style="text-align: center">
+                    <td style="text-align: center">
+                        @if ($realisasi_pbj->first()->details()->count() > 0)
+                            {{ $realisasi_pbj->first()->details()->where('jenis_barang_jasa_id', $barjas->id)->sum('nilai') }}
+                        @else
+                        @endif
 
-                            @if ($realisasi_pbj->where('triwulan_id', $triwulan->id)->first()->details()->count() > 0)
-                                {{ $realisasi_pbj->where('triwulan_id', $triwulan->id)->first()->details()->where('jenis_barang_jasa_id', $barjas->id)->sum('paket') }}
-                            @else
-                            @endif
-                        </td>
-                        <td style="text-align: center">
-                            @if ($realisasi_pbj->where('triwulan_id', $triwulan->id)->first()->details()->count() > 0)
-                                {{ $realisasi_pbj->where('triwulan_id', $triwulan->id)->first()->details()->where('jenis_barang_jasa_id', $barjas->id)->sum('nilai') }}
-                            @else
-                            @endif
-
-                        </td>
-                    @endforeach
-                @endif
+                    </td>
+                @endforeach
+                {{-- @endif --}}
             </tr>
         @endforeach
         <tr></tr>
@@ -456,7 +458,7 @@
             <td colspan="5" style="text-align: center">Penyebab Permasalahan/Rekomendasi</td>
             <td style="text-align: center" colspan="2">Rekomendasi</td>
         </tr>
-        @foreach ($data_permasalahan_pbj->where('triwulan_id', $triwulan->id)->get() as $permasalahan_pbj)
+        @foreach (App\Models\PermasalahanPbj::where('user_id', $user->id)->where('triwulan_id', $triwulan->id)->get() as $permasalahan_pbj)
             <tr>
                 <td></td>
                 <td></td>

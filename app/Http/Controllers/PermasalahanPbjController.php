@@ -36,7 +36,7 @@ class PermasalahanPbjController extends Controller
     {
         return view('pages.permasalahan-pbj.create', [
             'title' => 'Tambah Permasalahan PBJ',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => Triwulan::active()->orderBy('nama', 'ASC')->get()
         ]);
     }
 
@@ -96,7 +96,7 @@ class PermasalahanPbjController extends Controller
         return view('pages.permasalahan-pbj.edit', [
             'title' => 'Edit Permasalahan PBJ',
             'item' => $item,
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get()
+            'data_triwulan' => Triwulan::active()->orderBy('nama', 'ASC')->get()
         ]);
     }
 

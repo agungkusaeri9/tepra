@@ -37,9 +37,10 @@ class TargetPbjController extends Controller
      */
     public function create()
     {
+        $data_triwulan = Triwulan::active()->get();
         return view('pages.target-pbj.create', [
             'title' => 'Tambah Target PBJ',
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get(),
+            'data_triwulan' => $data_triwulan,
             'data_jenis_barjas' => JenisBarangJasa::orderBy('nama', 'ASC')->get()
         ]);
     }
@@ -128,7 +129,7 @@ class TargetPbjController extends Controller
         return view('pages.target-pbj.edit', [
             'title' => 'Edit Target PBJ',
             'item' => $item,
-            'data_triwulan' => Triwulan::orderBy('nama', 'ASC')->get(),
+            'data_triwulan' => Triwulan::active()->orderBy('nama', 'ASC')->get(),
             'data_jenis_barjas' => JenisBarangJasa::orderBy('nama', 'ASC')->get()
         ]);
     }

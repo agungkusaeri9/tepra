@@ -25,9 +25,8 @@
         <div class="main-wrapper">
             <div class="navbar-bg"></div>
             <x-Navbar></x-Navbar>
-            <div class="main-sidebar">
-                <x-Sidebar></x-Sidebar>
-            </div>
+
+            <x-Sidebar></x-Sidebar>
 
             <!-- Main Content -->
             <div class="main-content">
